@@ -1,10 +1,11 @@
 ﻿using LoggerService;
 using NLog;
-namespace CompanyEmployees.Extensions;
+using Contracts;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 
-    public static class ServiceExtensions
+public static class ServiceExtensions
     {
         public static void ConfigureCors(this IServiceCollection services) =>
         services.AddCors(options =>
@@ -26,4 +27,6 @@ using Microsoft.EntityFrameworkCore;
          services.AddDbContext<RepositoryContext>(opts =>
          opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b =>
          b.MigrationsAssembly("CompanyEmployees")));
+        public static void ConfigureRepositoryManager(this IServiceCollection services)=>
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
 }
