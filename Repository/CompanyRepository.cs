@@ -15,5 +15,10 @@ namespace Repository
             : base(repositoryContext)
         {
         }
+
+        public void AnyMethodFromCompanyRepository()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

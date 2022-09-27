@@ -1,5 +1,4 @@
 namespace CompanyEmployees;
-using CompanyEmployees.Extensions;
 using NLog;
 
 public class Program
