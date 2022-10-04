@@ -20,9 +20,13 @@ namespace Entities
         {
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+            modelBuilder.ApplyConfiguration(new ShopsConfiguration());
+            modelBuilder.ApplyConfiguration(new OwnersConfiguration());
         }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Shops> Shops { get; set; }
+        public DbSet<Owner> Owners { get; set; }
     }  
 }
 
