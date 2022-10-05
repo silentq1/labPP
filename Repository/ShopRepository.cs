@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class ShopsRepository : RepositoryBase<Shops>, IShopsRepository
+    public class ShopRepository : RepositoryBase<Shop>, IShopRepository
     {
-        public ShopsRepository(RepositoryContext repositoryContext) : base(repositoryContext)
+        public ShopRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IShopsRepository
+    public interface IShopRepository
     {
     }
 }
