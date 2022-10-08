@@ -29,6 +29,11 @@ public class Startup
         services.ConfigureSqlContext(Configuration);
         services.ConfigureRepositoryManager();
         services.AddAutoMapper(typeof(Startup));
+        services.AddControllers(config => { 
+            config.RespectBrowserAcceptHeader = true;
+            config.ReturnHttpNotAcceptable = true; })
+            .AddXmlDataContractSerializerFormatters() .AddCustomCSVFormatter();
+
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -66,9 +71,7 @@ public class Startup
     {
         public MappingProfile()
         {
-            CreateMap<Company, CompanyDto>()
-            .ForMember(c => c.FullAddress,
-                opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
+            CreateMap<Company, CompanyDto>().ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
             CreateMap<Owner, OwnerDto>();
             CreateMap<Shop, ShopDto>();
         }
