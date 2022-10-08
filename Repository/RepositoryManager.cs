@@ -13,7 +13,7 @@ namespace Repository
         private RepositoryContext _repositoryContext;
         private ICompanyRepository _companyRepository;
         private IEmployeeRepository _employeeRepository;
-        private IShopsRepository _shopsRepository;
+        private IShopRepository _shopsRepository;
         private IOwnerRepository _ownerRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -37,12 +37,12 @@ namespace Repository
                 return _employeeRepository;
             }
         }
-        public IShopsRepository Shops
+        public IShopRepository Shops
         {
             get
             {
                 if (_shopsRepository == null)
-                    _shopsRepository = new ShopsRepository(_repositoryContext);
+                    _shopsRepository = new ShopRepository(_repositoryContext);
                 return _shopsRepository;
             }
         }

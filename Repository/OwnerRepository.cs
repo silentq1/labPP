@@ -14,5 +14,6 @@ namespace Repository
         public OwnerRepository(RepositoryContext repositoryContext): base(repositoryContext)
         {
         }
+        public IEnumerable<Owner> GetAllOwners(bool trackChanges) => FindAll(trackChanges).OrderBy(c => c.Name).ToList();
     }
 }
