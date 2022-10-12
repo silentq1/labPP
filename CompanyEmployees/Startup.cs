@@ -79,6 +79,8 @@ public class Startup
             CreateMap<ShopForCreationDto, Shop>();
             CreateMap<OwnerForCreationDto, Owner>();
             CreateMap<EmployeeForCreationDto, Employee>();
+            CreateMap<EmployeeForUpdateDto, Employee>();
+            CreateMap<CompanyForUpdateDto, Company>();
 
         }
     }
