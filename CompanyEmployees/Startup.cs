@@ -71,11 +71,15 @@ public class Startup
     {
         public MappingProfile()
         {
-            CreateMap<Company, CompanyDto>()
-            .ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
+            CreateMap<Company, CompanyDto>().ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ', x.Address, x.Country)));
+            CreateMap<Owner, OwnerDto>();
+            CreateMap<Shop, ShopDto>();
             CreateMap<Employee, EmployeeDto>();
             CreateMap<CompanyForCreationDto, Company>();
+            CreateMap<ShopForCreationDto, Shop>();
+            CreateMap<OwnerForCreationDto, Owner>();
             CreateMap<EmployeeForCreationDto, Employee>();
+
         }
     }
 }
