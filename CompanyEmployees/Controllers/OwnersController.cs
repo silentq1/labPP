@@ -28,5 +28,21 @@ namespace CompanyEmployees.Controllers
             var ownersDto = _mapper.Map<IEnumerable<OwnerDto>>(owners);
             return Ok(ownersDto);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetOwner(Guid id)
+        {
+            var owner = _repository.Owner.GetOwner(id, trackChanges: false);
+            if (owner == null)
+            {
+                _logger.LogInfo($"Owner with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            else
+            {
+                var ownerDto = _mapper.Map<OwnerDto>(owner);
+                return Ok(ownerDto);
+            }
+        }
     }
 }

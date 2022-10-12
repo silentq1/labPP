@@ -28,5 +28,21 @@ namespace CompanyEmployees.Controllers
             var shopsDto = _mapper.Map<IEnumerable<ShopDto>>(shops);
             return Ok(shopsDto);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetShop(Guid id)
+        {
+            var shop = _repository.Shops.GetShop(id, trackChanges: false);
+            if (shop == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            else
+            {
+                var shopDto = _mapper.Map<ShopDto>(shop);
+                return Ok(shopDto);
+            }
+        }
     }
 }
