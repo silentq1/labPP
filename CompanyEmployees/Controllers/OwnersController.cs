@@ -29,7 +29,7 @@ namespace CompanyEmployees.Controllers
             return Ok(ownersDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "OwnerById")]
         public IActionResult GetOwner(Guid id)
         {
             var owner = _repository.Owner.GetOwner(id, trackChanges: false);
@@ -43,6 +43,21 @@ namespace CompanyEmployees.Controllers
                 var ownerDto = _mapper.Map<OwnerDto>(owner);
                 return Ok(ownerDto);
             }
+        }
+
+        [HttpPost]
+        public IActionResult CreateOwer([FromBody] OwnerForCreationDto owner)
+        {
+            if (owner == null)
+            {
+                _logger.LogError("OwnerForCreationDto object sent from client is null.");
+                return BadRequest("ShopForCreationDto object is null");
+            }
+            var ownerEntity = _mapper.Map<Owner>(owner);
+            _repository.Owner.CreateOwner(ownerEntity);
+            _repository.Save();
+            var ownerToReturn = _mapper.Map<OwnerDto>(ownerEntity);
+            return CreatedAtRoute("OwnerById", new { id = ownerToReturn.OwnerId }, ownerToReturn);
         }
     }
 }
