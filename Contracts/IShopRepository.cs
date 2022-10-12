@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IOwnerRepository
+    public interface IShopRepository
     {
-        IEnumerable<Owner> GetAllOwners(bool trackChanges);
-        Owner GetOwner(Guid ownerId, bool trackChanges);
+        IEnumerable<Shop> GetAllShops(bool trackChanges);
+        Shop GetShop(Guid shopId, bool trackChanges);
     }
 }

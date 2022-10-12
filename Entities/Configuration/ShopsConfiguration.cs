@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Entities.Configuration
 {
-    public class ShopsConfiguration : IEntityTypeConfiguration<Shops>
+    public class ShopsConfiguration : IEntityTypeConfiguration<Shop>
     {
-        public void Configure(EntityTypeBuilder<Shops> builder)
+        public void Configure(EntityTypeBuilder<Shop> builder)
         {
             builder.HasData
             (
-            new Shops
+            new Shop
             {
                 Id = 1,
                 Name = "Citylink",
                 Address = "Botevgradskaya 12",
                 Budget = 100,
             },
-            new Shops
+            new Shop
             {
                 Id = 2,
                 Name = "DNS",
