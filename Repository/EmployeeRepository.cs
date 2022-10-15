@@ -26,5 +26,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+        public void DeleteEmployee(Employee employee)
+        {
+            Delete(employee);
+
+        }
     }
 }

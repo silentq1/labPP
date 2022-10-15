@@ -18,5 +18,9 @@ namespace Repository
         public Owner GetOwner(Guid ownerId, bool trackChanges) => FindByCondition(c
             => c.Id.Equals(ownerId), trackChanges).SingleOrDefault();
         public void CreateOwner(Owner owner) => Create(owner);
+        public void DeleteOwner(Owner owner)
+        {
+            Delete(owner);
+        }
     }
 }

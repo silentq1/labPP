@@ -4,6 +4,7 @@ using Entities.DataTransferObjects;
 using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CompanyEmployees.Controllers
 {
@@ -51,13 +52,46 @@ namespace CompanyEmployees.Controllers
             if (shop == null)
             {
                 _logger.LogError("ShopForCreationDto object sent from client is null.");
-            return BadRequest("ShopForCreationDto object is null");
+                return BadRequest("ShopForCreationDto object is null");
             }
             var shopEntity = _mapper.Map<Shop>(shop);
             _repository.Shops.CreateShop(shopEntity);
             _repository.Save();
             var shopToReturn = _mapper.Map<ShopDto>(shopEntity);
             return CreatedAtRoute("ShopById", new { id = shopToReturn.ShopId }, shopToReturn);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteShop(Guid id)
+        {
+            var shop = _repository.Shops.GetShop(id, trackChanges: false);
+            if (shop == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _repository.Shops.DeleteShop(shop);
+            _repository.Save();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateShop(Guid id, [FromBody] ShopForUpdateDto shop)
+        {
+            if (shop == null)
+            {
+                _logger.LogError("ShopForUpdateDto object sent from client is null.");
+                return BadRequest("ShopForUpdateDto object is null");
+            }
+            var shopEntity = _repository.Shops.GetShop(id, trackChanges: true);
+            if (shopEntity == null)
+            {
+                _logger.LogInfo($"Shop with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _mapper.Map(shop, shopEntity);
+            _repository.Save();
+            return NoContent();
         }
     }
 }

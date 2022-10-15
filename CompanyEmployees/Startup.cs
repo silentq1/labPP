@@ -5,6 +5,7 @@ using Entities.Models;
 using LoggerService;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
+using Newtonsoft;
 
 
 namespace CompanyEmployees;
@@ -32,7 +33,7 @@ public class Startup
         services.AddControllers(config => { 
             config.RespectBrowserAcceptHeader = true;
             config.ReturnHttpNotAcceptable = true; })
-            .AddXmlDataContractSerializerFormatters() .AddCustomCSVFormatter();
+            .AddNewtonsoftJson().AddXmlDataContractSerializerFormatters() .AddCustomCSVFormatter();
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -79,6 +80,11 @@ public class Startup
             CreateMap<ShopForCreationDto, Shop>();
             CreateMap<OwnerForCreationDto, Owner>();
             CreateMap<EmployeeForCreationDto, Employee>();
+            CreateMap<EmployeeForUpdateDto, Employee>();
+            CreateMap<CompanyForUpdateDto, Company>();
+            CreateMap<EmployeeForUpdateDto, Employee>().ReverseMap();
+            CreateMap<ShopForUpdateDto, Shop>();
+            CreateMap<OwnerForUpdateDto, Owner>();
 
         }
     }

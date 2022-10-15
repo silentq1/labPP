@@ -58,6 +58,40 @@ namespace CompanyEmployees.Controllers
             _repository.Save();
             var ownerToReturn = _mapper.Map<OwnerDto>(ownerEntity);
             return CreatedAtRoute("OwnerById", new { id = ownerToReturn.OwnerId }, ownerToReturn);
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOwner(Guid id)
+        {
+            var owner = _repository.Owner.GetOwner(id, trackChanges: false);
+            if (owner == null)
+            {
+                _logger.LogInfo($"Owner with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _repository.Owner.DeleteOwner(owner);
+            _repository.Save();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateOwner(Guid id, [FromBody] OwnerForUpdateDto owner)
+        {
+            if (owner == null)
+            {
+                _logger.LogError("OwnerForUpdateDto object sent from client is null.");
+                return BadRequest("CompanyForUpdateDto object is null");
+            }
+            var ownerEntity = _repository.Owner.GetOwner(id, trackChanges: true);
+            if (ownerEntity == null)
+            {
+                _logger.LogInfo($"Owner with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _mapper.Map(owner, ownerEntity);
+            _repository.Save();
+            return NoContent();
         }
     }
 }

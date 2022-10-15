@@ -4,6 +4,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyEmployees.Controllers
@@ -26,9 +27,9 @@ namespace CompanyEmployees.Controllers
         [HttpGet]
         public IActionResult GetCompanies()
         {
-                var companies = _repository.Company.GetAllCompanies(trackChanges: false);
-                var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
-                return Ok(companiesDto);
+            var companies = _repository.Company.GetAllCompanies(trackChanges: false);
+            var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
+            return Ok(companiesDto);
         }
 
 
@@ -55,7 +56,7 @@ namespace CompanyEmployees.Controllers
             if (company == null)
             {
                 _logger.LogError("CompanyForCreationDto object sent from client is null.");
-            return BadRequest("CompanyForCreationDto object is null");
+                return BadRequest("CompanyForCreationDto object is null");
             }
             var companyEntity = _mapper.Map<Company>(company);
             _repository.Company.CreateCompany(companyEntity);
@@ -104,6 +105,67 @@ namespace CompanyEmployees.Controllers
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
             return CreatedAtRoute("CompanyCollection", new { ids },
             companyCollectionToReturn);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCompany(Guid id)
+        {
+            var company = _repository.Company.GetCompany(id, trackChanges: false);
+            if (company == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _repository.Company.DeleteCompany(company);
+            _repository.Save();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCompany(Guid id, [FromBody] CompanyForUpdateDto company)
+        {
+            if (company == null)
+            {
+                _logger.LogError("CompanyForUpdateDto object sent from client is null.");
+                return BadRequest("CompanyForUpdateDto object is null");
+            }
+            var companyEntity = _repository.Company.GetCompany(id, trackChanges: true);
+            if (companyEntity == null)
+            {
+                _logger.LogInfo($"Company with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _mapper.Map(company, companyEntity);
+            _repository.Save();
+            return NoContent();
+        }
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateEmployeeForCompany(Guid companyId, Guid id, [FromBody] JsonPatchDocument<EmployeeForUpdateDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                _logger.LogError("patchDoc object sent from client is null.");
+                return BadRequest("patchDoc object is null");
+            }
+            var company = _repository.Company.GetCompany(companyId, trackChanges: false);
+            if (company == null)
+            {
+                _logger.LogInfo($"Company with id: {companyId} doesn't exist in the database.");
+            return NotFound();
+            }
+            var employeeEntity = _repository.Employee.GetEmployee(companyId, id,
+            trackChanges:
+            true);
+            if (employeeEntity == null)
+            {
+                _logger.LogInfo($"Employee with id: {id} doesn't exist in the database.");
+            return NotFound();
+            }
+            var employeeToPatch = _mapper.Map<EmployeeForUpdateDto>(employeeEntity);
+            patchDoc.ApplyTo(employeeToPatch);
+            _mapper.Map(employeeToPatch, employeeEntity);
+            _repository.Save();
+            return NoContent();
         }
     }
 }
