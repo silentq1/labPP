@@ -18,5 +18,10 @@ namespace Repository
         public Shop GetShop(Guid shopId, bool trackChanges) => FindByCondition(c
             => c.Id.Equals(shopId), trackChanges).SingleOrDefault();
         public void CreateShop(Shop shop) => Create(shop);
+
+        public void DeleteShop(Shop shop)
+        {
+            Delete(shop);
+        }
     }
 }

@@ -83,6 +83,8 @@ public class Startup
             CreateMap<EmployeeForUpdateDto, Employee>();
             CreateMap<CompanyForUpdateDto, Company>();
             CreateMap<EmployeeForUpdateDto, Employee>().ReverseMap();
+            CreateMap<ShopForUpdateDto, Shop>();
+            CreateMap<OwnerForUpdateDto, Owner>();
 
         }
     }
