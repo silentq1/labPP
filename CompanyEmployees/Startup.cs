@@ -6,7 +6,7 @@ using LoggerService;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Newtonsoft;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyEmployees;
 
@@ -29,6 +29,10 @@ public class Startup
         services.ConfigureLoggerService();
         services.ConfigureSqlContext(Configuration);
         services.ConfigureRepositoryManager();
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
         services.AddAutoMapper(typeof(Startup));
         services.AddControllers(config => { 
             config.RespectBrowserAcceptHeader = true;
