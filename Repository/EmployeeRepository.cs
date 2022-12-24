@@ -31,5 +31,10 @@ namespace Repository
             Delete(employee);
 
         }
+
+        public Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
