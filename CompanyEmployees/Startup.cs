@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Newtonsoft;
 using Microsoft.AspNetCore.Mvc;
+using CompanyEmployees.ActionFilters;
 
 namespace CompanyEmployees;
 
@@ -36,11 +37,12 @@ public class Startup
         services.AddAutoMapper(typeof(Startup));
         services.AddControllers(config => { 
             config.RespectBrowserAcceptHeader = true;
-            config.ReturnHttpNotAcceptable = true; })
-            .AddNewtonsoftJson().AddXmlDataContractSerializerFormatters() .AddCustomCSVFormatter();
-
+            config.ReturnHttpNotAcceptable = true;
+        }).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters() .AddCustomCSVFormatter();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddScoped<ValidationFilterAttribute>();
+        services.AddScoped<ValidateCompanyExistsAttribute>();
         services.AddSwaggerGen();
     }
 

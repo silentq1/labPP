@@ -14,5 +14,6 @@ namespace Contracts
         void CreateEmployeeForCompany(Guid companyId, Employee employee);
         void DeleteEmployee(Employee employee);
         void AnyMethodFromEmployeeRepository();
+        Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges);
     }
 }
